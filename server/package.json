@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "scripts": {
+    "development": "nodemon app.js"
+  },
+  "author": "Przemysław Łapiński",
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
+  }
+}

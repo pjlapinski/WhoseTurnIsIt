@@ -1,0 +1,24 @@
+{
+  "name": "whoseturnisit",
+  "version": "0.0.1",
+  "description": "A website for tracking and sharing initiative for roleplaying-games",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pjlapinski/WhoseTurnIsIt"
+  },
+  "scripts": {
+    "development:server": "npm run --prefix ./server/ development",
+    "development:client": "npm run --prefix ./client/ development",
+    "development": "concurrently \"npm:development:server\" \"npm:development:client\""
+  },
+  "keywords": [
+    "websocket",
+    "initiative",
+    "rpg"
+  ],
+  "author": "Przemysław Łapiński",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^6.0.2"
+  }
+}
