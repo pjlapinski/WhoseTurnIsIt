@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const btnClasses = 'btn btn-lg btn-light font-weight-bold';
+const btnClasses = 'btn btn-lg btn-dark font-weight-bold';
 
 const HomeBody = () => {
   const [roomId, setRoomId] = useState('');
@@ -24,7 +24,7 @@ const HomeBody = () => {
         </button>
       </div>
       <div className='form-group row justify-content-center mx-1'>
-        <div className='btn-group-vertical col-lg-5 p-0 bg-light rounded'>
+        <div className='btn-group-vertical col-lg-5 p-0 rounded'>
           <input
             type='text'
             value={roomId}

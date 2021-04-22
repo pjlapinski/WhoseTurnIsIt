@@ -1,3 +1,29 @@
-.vh-100 {
-  height: 100vh !important;
+.table-bordered-dark {
+  & > thead > tr > th,
+  & > tbody > tr > td {
+    border-color: #343a40 !important;
+  }
+}
+
+.whitespace {
+  white-space: pre;
+}
+
+.app-h {
+  min-height: 100vh;
+  max-height: fit-content;
+  margin: 0;
+}
+
+.overflow-wrap {
+  overflow-wrap: break-word;
+}
+
+.td-15 {
+  width: 15%;
+}
+
+.td-75 {
+  width: 75%;
+  word-break: break-all;
 }
