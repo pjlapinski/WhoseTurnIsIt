@@ -8,7 +8,7 @@ const App = () => {
   return (
     <StoreProvider store={store}>
       <BrowserRouter>
-        <div className='vh-100'>
+        <div className='vh-100 bg-secondary'>
           <Route path='/' exact component={HomeView} />
         </div>
       </BrowserRouter>

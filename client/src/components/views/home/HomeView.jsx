@@ -1,7 +1,14 @@
 import React from 'react';
+import HomeHeader from './HomeHeader';
+import HomeBody from './HomeBody';
 
 const HomeView = () => {
-  return <div>Hello</div>;
+  return (
+    <>
+      <HomeHeader />
+      <HomeBody />
+    </>
+  );
 };
 
 export default HomeView;
