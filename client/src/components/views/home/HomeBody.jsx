@@ -23,7 +23,6 @@ const HomeBody = () => {
           Create a room
         </button>
       </div>
-      <h5 className='text-warning text-center'>{error}</h5>
       <div className='form-group row justify-content-center mx-1'>
         <div className='btn-group-vertical col-lg-5 p-0 bg-light rounded'>
           <input
@@ -38,6 +37,7 @@ const HomeBody = () => {
           </button>
         </div>
       </div>
+      <h5 className='text-warning text-center'>{error}</h5>
     </div>
   );
 };
