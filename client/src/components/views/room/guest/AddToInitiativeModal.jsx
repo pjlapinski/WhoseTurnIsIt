@@ -1,12 +1,10 @@
-import { useStoreState, useStoreActions } from 'easy-peasy';
 import React, { useState } from 'react';
+import useLocalStorage from '../../../../hooks/useLocalStorage';
 
 const AddToInitiativeModal = ({ errors, participants, onCharacterSelected, onCharacterAdded }) => {
   const [selectedCharacter, setSelectedCharacter] = useState(0);
   const [initiative, setInitiative] = useState('');
-
-  const characterName = useStoreState(state => state.characterName);
-  const setCharacterName = useStoreActions(state => state.setCharacterName);
+  const [characterName, setCharacterName] = useLocalStorage('savedCharacterName', '');
 
   return (
     <div className='modal' id='add-to-initiative-modal' tabIndex='-1' role='dialog' aria-hidden='true'>
