@@ -3,7 +3,7 @@ import RoomGuest from './guest/RoomGuest';
 import RoomHeader from './RoomHeader';
 
 const RoomView = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [userCount, setUserCount] = useState(2);
   const [participants, setParticipants] = useState([
     {
@@ -29,7 +29,7 @@ const RoomView = () => {
   return (
     <>
       <RoomHeader userCount={userCount} />
-      {isAdmin ? <></> : <RoomGuest participants={participants} currentInitiativeIdx={currentInitiativeIdx} />}
+      {isOwner ? <></> : <RoomGuest participants={participants} currentInitiativeIdx={currentInitiativeIdx} />}
     </>
   );
 };

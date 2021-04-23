@@ -8,21 +8,47 @@ import AddToInitiativeModal from './AddToInitiativeModal';
 const RoomGuest = ({ participants, currentInitiativeIdx }) => {
   const [character, setCharacter] = useState({ name: 'name', score: 21 });
   const [addToInitiativeModal, setAddToInitiativeModal] = useState(null);
+  const [modalErorrs, setModalErorrs] = useState({});
 
   const onCharacterInModalSelected = characterIdx => {
     setCharacter(participants[characterIdx]);
+  };
+
+  const onCharacterInModalAdded = (characterName, initiative) => {
+    let errors = false;
+    const initiativeScore = parseInt(initiative);
+    setModalErorrs({});
+    if (characterName === undefined || characterName === '') {
+      setModalErorrs({ characterName: 'The name cannot be empty' });
+      errors = true;
+    }
+    if (isNaN(initiativeScore)) {
+      setModalErorrs(prev => ({ ...prev, initiative: 'The initiative score cannot be empty' }));
+      errors = true;
+    }
+    if (errors) return;
+    setCharacter({ name: characterName, score: initiativeScore });
+    console.log(character);
   };
 
   useEffect(() => {
     setAddToInitiativeModal(new Modal(document.getElementById('add-to-initiative-modal')));
   }, []);
 
+  useEffect(() => {
+    addToInitiativeModal?.show();
+  }, [addToInitiativeModal]);
+
   return (
     <>
-      {/* For testing the modal: */}
-      {/* <button onClick={() => addToInitiativeModal.show()}>Show Modal</button> */}
       {ReactDOM.createPortal(
-        <AddToInitiativeModal participants={participants} onCharacterSelected={onCharacterInModalSelected} />,
+        <AddToInitiativeModal
+          errors={modalErorrs}
+          character={character.name}
+          participants={participants}
+          onCharacterSelected={onCharacterInModalSelected}
+          onCharacterAdded={onCharacterInModalAdded}
+        />,
         document.body
       )}
       {participants.length === 0 ? (

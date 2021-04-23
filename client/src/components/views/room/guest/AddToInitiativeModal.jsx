@@ -1,7 +1,12 @@
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import React, { useState } from 'react';
 
-const AddToInitiativeModal = ({ participants, onCharacterSelected }) => {
+const AddToInitiativeModal = ({ errors, participants, onCharacterSelected, onCharacterAdded }) => {
   const [selectedCharacter, setSelectedCharacter] = useState(0);
+  const [initiative, setInitiative] = useState('');
+
+  const characterName = useStoreState(state => state.characterName);
+  const setCharacterName = useStoreActions(state => state.setCharacterName);
 
   return (
     <div className='modal' id='add-to-initiative-modal' tabIndex='-1' role='dialog' aria-hidden='true'>
@@ -11,8 +16,22 @@ const AddToInitiativeModal = ({ participants, onCharacterSelected }) => {
             <h5 className='modal-title' id='exampleModalLabel'>
               Add yourself to initiative
             </h5>
-            <input type='text' className='form-control my-2' placeholder='Character name' />
-            <input type='number' className='form-control my-2' placeholder='Initiative score' />
+            {errors?.characterName !== undefined ? <h6 className='text-danger'>{errors.characterName}</h6> : ''}
+            <input
+              type='text'
+              className='form-control my-2'
+              placeholder='Character name'
+              value={characterName}
+              onChange={e => setCharacterName(e.target.value)}
+            />
+            {errors?.initiative !== undefined ? <h6 className='text-danger'>{errors.initiative}</h6> : ''}
+            <input
+              type='number'
+              className='form-control my-2'
+              placeholder='Initiative score'
+              value={initiative}
+              onChange={e => setInitiative(e.target.value)}
+            />
             <h5 className='modal-title' id='exampleModalLabel'>
               Or claim a character
             </h5>
@@ -29,7 +48,11 @@ const AddToInitiativeModal = ({ participants, onCharacterSelected }) => {
             </select>
           </div>
           <div className='modal-footer'>
-            <button type='button' className='btn btn-secondary' data-dismiss='modal'>
+            <button
+              type='button'
+              className='btn btn-secondary'
+              onClick={() => onCharacterAdded(characterName, initiative)}
+            >
               Add
             </button>
             <button
