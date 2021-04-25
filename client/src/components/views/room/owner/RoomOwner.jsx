@@ -33,6 +33,8 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
   }, []);
 
   useEffect(() => {
+    if (isNaN(currentInitiativeIdx) || (currentInitiativeIdx !== 0 && currentInitiativeIdx >= participants.length))
+      setCurrentInitiativeIdx(0);
     setSavedData({
       participants,
       currentInitiativeIdx,

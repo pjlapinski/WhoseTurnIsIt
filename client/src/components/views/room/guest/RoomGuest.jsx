@@ -29,7 +29,7 @@ const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCur
       errors = true;
     }
     if (errors) return;
-    const char = { name: characterName, score: initiativeScore };
+    const char = { name: characterName, score: initiativeScore, currentHp: 0, maxHp: 0, notes: '', hidden: false };
     setCharacter(char);
     socket.emit('add-to-initiative', char);
   };

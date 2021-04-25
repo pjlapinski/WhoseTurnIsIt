@@ -50,6 +50,7 @@ const AddToInitiativeModal = ({ errors, participants, onCharacterSelected, onCha
               type='button'
               className='btn btn-secondary'
               onClick={() => onCharacterAdded(characterName, initiative)}
+              data-dismiss='modal'
             >
               Add
             </button>

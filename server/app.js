@@ -9,10 +9,10 @@ const io = require('socket.io')(config.PORT, {
 
 io.on('connection', socket => {
   socket.on('guest-room-id', roomId => {
-    // if (io.sockets.adapter.rooms.get(roomId) === undefined) {
-    //   socket.emit('room-doesnt-exist');
-    //   return;
-    // }
+    if (io.sockets.adapter.rooms.get(roomId) === undefined) {
+      socket.emit('room-doesnt-exist');
+      return;
+    }
     socket.join(roomId);
     const clients = io.sockets.adapter.rooms.get(roomId);
     socket.to(roomId).emit('request-initiative');
@@ -25,7 +25,6 @@ io.on('connection', socket => {
   });
   socket.on('owner-room-id', roomId => {
     socket.join(roomId);
-    const clients = io.sockets.adapter.rooms.get(roomId);
 
     socket.on('post-initiative', initiative => socket.to(roomId).emit('get-initiative', initiative));
     socket.on('advance-initiative', () => socket.to(roomId).emit('advance-initiative'));

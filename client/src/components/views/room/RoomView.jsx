@@ -14,7 +14,6 @@ const RoomView = () => {
   const [currentInitiativeIdx, setCurrentInitiativeIdx] = useState(0);
   const [socket, setSocket] = useState();
 
-  useEffect(() => setParticipants(prev => [...prev].sort((a, b) => b.score - a.score)), [currentInitiativeIdx]);
   useEffect(() => {
     setIsOwner(history.location.state?.owner);
     const s = io(config.SERVER_HOST);
@@ -22,8 +21,8 @@ const RoomView = () => {
     s.on('room-size', roomSize => setUserCount(roomSize));
     s.on('add-to-initiative', char => {
       const cpy = [...participants];
-      const currentParticipant = cpy.sort((a, b) => b.score - a.score)[currentInitiativeIdx];
-      const newArr = [...cpy, char].sort((a, b) => b.score - a.score);
+      const currentParticipant = cpy.sort((a, b) => b?.score - a?.score)[currentInitiativeIdx];
+      const newArr = [...cpy, char].sort((a, b) => b?.score - a?.score);
       setParticipants(newArr);
       if (char.score >= currentParticipant.score) {
         setCurrentInitiativeIdx(newArr.indexOf(currentParticipant));
@@ -31,6 +30,20 @@ const RoomView = () => {
     });
     return () => s.disconnect();
   }, []);
+  useEffect(() => setParticipants(prev => [...prev].sort((a, b) => b.score - a.score)), [currentInitiativeIdx]);
+  useEffect(() => {
+    if (socket === undefined) return;
+    socket.off('add-to-initiative');
+    socket.on('add-to-initiative', char => {
+      const cpy = [...participants];
+      const currentParticipant = cpy.sort((a, b) => b.score - a.score)[currentInitiativeIdx];
+      const newArr = [...cpy, char].sort((a, b) => b.score - a.score);
+      setParticipants(newArr);
+      if (char.score >= currentParticipant?.score) {
+        setCurrentInitiativeIdx(newArr.indexOf(currentParticipant));
+      }
+    });
+  }, [participants]);
 
   return (
     <>
