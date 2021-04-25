@@ -10,7 +10,6 @@ const RoomView = () => {
   const history = useHistory();
   const [isOwner, setIsOwner] = useState(false);
   const [userCount, setUserCount] = useState(1);
-  // TODO: remove initial state from currentInitiativeIdx and set participants initial state to [], when owner room view is done
   const [participants, setParticipants] = useState([]);
   const [currentInitiativeIdx, setCurrentInitiativeIdx] = useState(0);
   const [socket, setSocket] = useState();

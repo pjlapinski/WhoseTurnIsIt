@@ -13,7 +13,7 @@ const updateSocketInitiative = (socket, data) => {
 
 const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCurrentInitiativeIdx, socket }) => {
   const { id: roomId } = useParams();
-  const [showId, setShowId] = useState(false);
+  const [showId, setShowId] = useState(true);
   const [savedData, setSavedData] = useLocalStorage('savedToomData');
 
   useEffect(() => {
@@ -36,6 +36,12 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
     setSavedData({
       participants,
       currentInitiativeIdx,
+    });
+    setParticipants(prev => {
+      const sorted = prev.sort((a, b) => b.score - a.score);
+      updateSocketInitiative(socket, { participants: sorted, currentInitiativeIdx });
+      socket.emit('post-initiative', { participants: sorted, currentInitiativeIdx });
+      return sorted;
     });
   }, [participants, currentInitiativeIdx]);
 
@@ -72,9 +78,29 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
             <button className='btn btn-light font-weight-bold col-lg-2 mx-2' onClick={() => setShowId(true)}>
               Switch to room id view
             </button>
-            <button className='btn btn-light font-weight-bold col-lg-2 mx-2'>Add a new character to initiative</button>
             <button className='btn btn-light font-weight-bold col-lg-2 mx-2' onClick={onInitiativeCleared}>
               Clear initiative
+            </button>
+          </div>
+          <div className='row col justify-content-center align-items-center pb-3'>
+            <button
+              className='btn btn-light font-weight-bold col-lg-2 mx-2'
+              onClick={() =>
+                setParticipants(prev =>
+                  [...prev].concat([
+                    {
+                      score: 0,
+                      name: '',
+                      currentHp: 0,
+                      maxHp: 0,
+                      notes: '',
+                      hidden: true,
+                    },
+                  ])
+                )
+              }
+            >
+              Add a new character to initiative
             </button>
             <button className='btn btn-light font-weight-bold col-lg-2 mx-2' onClick={onInitiativeAdvanced}>
               Advance initiative
@@ -82,7 +108,11 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
           </div>
 
           <div className='row justify-content-center'>
-            <OwnerInitiativeList currentInitiativeIdx={currentInitiativeIdx} participants={participants} />
+            <OwnerInitiativeList
+              currentInitiativeIdx={currentInitiativeIdx}
+              participants={participants}
+              setParticipants={setParticipants}
+            />
           </div>
         </div>
       )}

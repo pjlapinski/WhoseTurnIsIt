@@ -38,7 +38,7 @@ const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCur
 
   useEffect(() => {
     if (socket === undefined) return;
-    socket.once('get-initiative', initiative => {
+    socket.on('get-initiative', initiative => {
       setParticipants(initiative.participants);
       setCurrentInitiativeIdx(initiative.currentInitiativeIdx);
     });
@@ -53,8 +53,9 @@ const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCur
   }, [socket]);
 
   useEffect(() => {
-    socket?.off('advance-initiative');
-    socket?.on('advance-initiative', () => {
+    if (socket === undefined) return;
+    socket.off('advance-initiative');
+    socket.on('advance-initiative', () => {
       setCurrentInitiativeIdx(prev => (prev + 1) % participants.length);
     });
   }, [currentInitiativeIdx, participants.length]);
