@@ -5,7 +5,7 @@ import { mod } from '../../../../util/math';
 import AddToInitiativeModal from './AddToInitiativeModal';
 import { useHistory, useParams } from 'react-router-dom';
 
-const RoomGuest = ({ participants, currentInitiativeIdx, socket }) => {
+const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCurrentInitiativeIdx, socket }) => {
   const { id: roomId } = useParams();
   const [character, setCharacter] = useState();
   const [addToInitiativeModal, setAddToInitiativeModal] = useState(null);
@@ -38,13 +38,26 @@ const RoomGuest = ({ participants, currentInitiativeIdx, socket }) => {
 
   useEffect(() => {
     if (socket === undefined) return;
+    socket.once('get-initiative', initiative => {
+      setParticipants(initiative.participants);
+      setCurrentInitiativeIdx(initiative.currentInitiativeIdx);
+    });
     socket.emit('guest-room-id', roomId);
+    socket.on('advance-initiative', () => {
+      setCurrentInitiativeIdx(prev => (prev + 1) % participants.length);
+    });
     socket.on('room-doesnt-exist', () => {
       addToInitiativeModal?.hide();
       history.push('/', { err: 'no-room' });
     });
-    return () => socket.disconnect();
   }, [socket]);
+
+  useEffect(() => {
+    socket?.off('advance-initiative');
+    socket?.on('advance-initiative', () => {
+      setCurrentInitiativeIdx(prev => (prev + 1) % participants.length);
+    });
+  }, [currentInitiativeIdx, participants.length]);
 
   useEffect(() => {
     addToInitiativeModal?.show();
@@ -54,7 +67,7 @@ const RoomGuest = ({ participants, currentInitiativeIdx, socket }) => {
     <>
       <AddToInitiativeModal
         errors={modalErorrs}
-        participants={participants}
+        participants={participants.filter(p => !p.hidden)}
         onCharacterSelected={onCharacterInModalSelected}
         onCharacterAdded={onCharacterInModalAdded}
       />
@@ -68,12 +81,16 @@ const RoomGuest = ({ participants, currentInitiativeIdx, socket }) => {
               return (
                 <>
                   <h4 className='text-white'>Current character:</h4>
-                  <h4 className='text-warning overflow-wrap'>{participants[currentInitiativeIdx].name}</h4>
+                  <h4 className='text-warning overflow-wrap'>
+                    {participants[currentInitiativeIdx].hidden ? '???' : participants[currentInitiativeIdx].name}
+                  </h4>
                   {mod(currentInitiativeIdx + 1, participants.length) !== currentInitiativeIdx ? (
                     <>
                       <h4 className='text-white'>Next character:</h4>
                       <h4 className='text-warning overflow-wrap'>
-                        {participants[mod(currentInitiativeIdx + 1, participants.length)].name}
+                        {participants[mod(currentInitiativeIdx + 1, participants.length)].hidden
+                          ? '???'
+                          : participants[mod(currentInitiativeIdx + 1, participants.length)].name}
                       </h4>
                     </>
                   ) : (

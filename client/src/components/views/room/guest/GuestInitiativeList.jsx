@@ -10,12 +10,16 @@ const GuestIniativeList = ({ participants, currentInitiativeIdx, player }) => {
         </tr>
       </thead>
       <tbody>
-        {participants.map((char, idx) => (
-          <tr key={idx} className={idx === currentInitiativeIdx ? 'table-danger' : ''}>
-            <td className='td-15'>{char.score}</td>
-            <td className='td-75'>{char.name === player?.name ? `${char.name} (You)` : char.name}</td>
-          </tr>
-        ))}
+        {participants.map((char, idx) =>
+          char.hidden ? (
+            <tr key={idx}></tr>
+          ) : (
+            <tr key={idx} className={idx === currentInitiativeIdx ? 'table-danger' : ''}>
+              <td className='td-15'>{char.score}</td>
+              <td className='td-75'>{char.name === player?.name ? `${char.name} (You)` : char.name}</td>
+            </tr>
+          )
+        )}
       </tbody>
     </table>
   );

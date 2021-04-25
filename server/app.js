@@ -28,5 +28,6 @@ io.on('connection', socket => {
     const clients = io.sockets.adapter.rooms.get(roomId);
 
     socket.on('post-initiative', initiative => socket.to(roomId).emit('get-initiative', initiative));
+    socket.on('advance-initiative', () => socket.to(roomId).emit('advance-initiative'));
   });
 });
