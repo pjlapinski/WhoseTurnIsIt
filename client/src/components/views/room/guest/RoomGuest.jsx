@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { Modal } from 'bootstrap';
 import GuestInitiativeList from './GuestInitiativeList';
 import { mod } from '../../../../util/math';
 import AddToInitiativeModal from './AddToInitiativeModal';
+import { useHistory, useParams } from 'react-router-dom';
 
-const RoomGuest = ({ participants, currentInitiativeIdx }) => {
-  const [character, setCharacter] = useState({ name: 'name', score: 21 });
+const RoomGuest = ({ participants, currentInitiativeIdx, socket }) => {
+  const { id: roomId } = useParams();
+  const [character, setCharacter] = useState();
   const [addToInitiativeModal, setAddToInitiativeModal] = useState(null);
   const [modalErorrs, setModalErorrs] = useState({});
+  const history = useHistory();
 
   const onCharacterInModalSelected = characterIdx => {
     setCharacter(participants[characterIdx]);
@@ -27,13 +29,22 @@ const RoomGuest = ({ participants, currentInitiativeIdx }) => {
       errors = true;
     }
     if (errors) return;
-    setCharacter({ name: characterName, score: initiativeScore });
-    console.log(character);
+    const char = { name: characterName, score: initiativeScore };
+    setCharacter(char);
+    socket.emit('add-to-initiative', char);
   };
 
+  useEffect(() => setAddToInitiativeModal(new Modal(document.getElementById('add-to-initiative-modal'))), []);
+
   useEffect(() => {
-    setAddToInitiativeModal(new Modal(document.getElementById('add-to-initiative-modal')));
-  }, []);
+    if (socket === undefined) return;
+    socket.emit('guest-room-id', roomId);
+    socket.on('room-doesnt-exist', () => {
+      addToInitiativeModal?.hide();
+      history.push('/', { err: 'no-room' });
+    });
+    return () => socket.disconnect();
+  }, [socket]);
 
   useEffect(() => {
     addToInitiativeModal?.show();
@@ -41,16 +52,12 @@ const RoomGuest = ({ participants, currentInitiativeIdx }) => {
 
   return (
     <>
-      {ReactDOM.createPortal(
-        <AddToInitiativeModal
-          errors={modalErorrs}
-          character={character.name}
-          participants={participants}
-          onCharacterSelected={onCharacterInModalSelected}
-          onCharacterAdded={onCharacterInModalAdded}
-        />,
-        document.body
-      )}
+      <AddToInitiativeModal
+        errors={modalErorrs}
+        participants={participants}
+        onCharacterSelected={onCharacterInModalSelected}
+        onCharacterAdded={onCharacterInModalAdded}
+      />
       {participants.length === 0 ? (
         <h1 className='text-center text-white'>The list of characters is empty!</h1>
       ) : (

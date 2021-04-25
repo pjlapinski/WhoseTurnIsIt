@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const btnClasses = 'btn btn-lg btn-dark font-weight-bold';
 
 const HomeBody = () => {
   const [roomId, setRoomId] = useState('');
   const [error, setError] = useState('');
+  const history = useHistory();
   const onRoomCreated = () => {
+    const roomId = uuidv4().slice(0, 8);
+    history.push(`/room/${roomId}`, { owner: true });
     return;
   };
+
   const onRoomJoined = () => {
     setError('');
     if (roomId === '') {
       setError('The room id cannot be empty');
       return;
     }
+    history.push(`/room/${roomId}`, { owner: false });
   };
+
+  useEffect(() => {
+    const err = history.location.state?.err;
+    setError(err === 'no-room' ? 'Room with this id does not exist' : '');
+    history.replace();
+  }, []);
 
   return (
     <div className='container pt-4'>
