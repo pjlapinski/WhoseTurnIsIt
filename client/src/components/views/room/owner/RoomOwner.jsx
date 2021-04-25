@@ -17,6 +17,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
   const [savedData, setSavedData] = useLocalStorage('savedToomData');
 
   useEffect(() => {
+    console.log('hi');
     if (savedData !== undefined) {
       setParticipants(savedData.participants);
       setCurrentInitiativeIdx(savedData.currentInitiativeIdx);
@@ -30,6 +31,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
         currentInitiativeIdx,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
       socket.emit('post-initiative', { participants: sorted, currentInitiativeIdx });
       return sorted;
     });
-  }, [participants, currentInitiativeIdx]);
+  }, [participants, currentInitiativeIdx, setCurrentInitiativeIdx, setSavedData, setParticipants, socket]);
 
   const onInitiativeAdvanced = () => {
     socket.emit('advance-initiative');
@@ -68,6 +70,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
     socket.on('request-initiative', () => {
       socket.emit('post-initiative', { participants, currentInitiativeIdx });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   return (

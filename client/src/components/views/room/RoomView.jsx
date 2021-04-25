@@ -29,7 +29,9 @@ const RoomView = () => {
       }
     });
     return () => s.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => setParticipants(prev => [...prev].sort((a, b) => b.score - a.score)), [currentInitiativeIdx]);
   useEffect(() => {
     if (socket === undefined) return;
@@ -43,7 +45,7 @@ const RoomView = () => {
         setCurrentInitiativeIdx(newArr.indexOf(currentParticipant));
       }
     });
-  }, [participants]);
+  }, [currentInitiativeIdx, participants, socket]);
 
   return (
     <>

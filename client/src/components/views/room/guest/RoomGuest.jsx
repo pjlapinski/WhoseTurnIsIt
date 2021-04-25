@@ -50,6 +50,7 @@ const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCur
       addToInitiativeModal?.hide();
       history.push('/', { err: 'no-room' });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ const RoomGuest = ({ participants, setParticipants, currentInitiativeIdx, setCur
     socket.on('advance-initiative', () => {
       setCurrentInitiativeIdx(prev => (prev + 1) % participants.length);
     });
-  }, [currentInitiativeIdx, participants.length]);
+  }, [currentInitiativeIdx, participants.length, setCurrentInitiativeIdx, socket]);
 
   useEffect(() => {
     addToInitiativeModal?.show();

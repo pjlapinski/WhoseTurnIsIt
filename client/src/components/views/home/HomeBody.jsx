@@ -27,7 +27,7 @@ const HomeBody = () => {
     const err = history.location.state?.err;
     setError(err === 'no-room' ? 'Room with this id does not exist' : '');
     history.replace();
-  }, []);
+  }, [history]);
 
   return (
     <div className='container pt-4'>
