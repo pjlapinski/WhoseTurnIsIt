@@ -17,7 +17,6 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
   const [savedData, setSavedData] = useLocalStorage('savedToomData');
 
   useEffect(() => {
-    console.log('hi');
     if (savedData !== undefined) {
       setParticipants(savedData.participants);
       setCurrentInitiativeIdx(savedData.currentInitiativeIdx);
