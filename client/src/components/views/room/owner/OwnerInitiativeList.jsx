@@ -51,14 +51,13 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='number'
                 value={char.currentHp}
                 onChange={e =>
-                  setInnerParticipants(prev =>
+                  setParticipants(prev =>
                     prev.map(ch => {
                       const val = parseInt(e.target.value);
                       return ch === char ? { ...ch, currentHp: isNaN(val) ? '' : val } : ch;
                     })
                   )
                 }
-                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
@@ -67,14 +66,13 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='number'
                 value={char.maxHp}
                 onChange={e =>
-                  setInnerParticipants(prev =>
+                  setParticipants(prev =>
                     prev.map(ch => {
                       const val = parseInt(e.target.value);
                       return ch === char ? { ...ch, maxHp: isNaN(val) ? '' : val } : ch;
                     })
                   )
                 }
-                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap'>
@@ -83,9 +81,8 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 rows='1'
                 value={char.notes}
                 onChange={e =>
-                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
+                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
                 }
-                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
@@ -93,16 +90,14 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='checkbox'
                 checked={char.hidden}
                 onChange={e =>
-                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, hidden: e.target.checked } : ch)))
+                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, hidden: e.target.checked } : ch)))
                 }
-                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
               <button
                 className='btn btn-sm btn-danger'
-                onClick={() => setInnerParticipants(prev => prev.filter(ch => ch !== char))}
-                onBlur={() => setParticipants(innerParticipants)}
+                onClick={() => setParticipants(prev => prev.filter(ch => ch !== char))}
               >
                 <i className='fas fa-trash-alt'></i>
               </button>
