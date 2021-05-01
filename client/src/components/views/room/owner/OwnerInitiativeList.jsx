@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeIdx }) => {
   const [innerParticipants, setInnerParticipants] = useState([...participants]);
+  useEffect(() => setInnerParticipants(participants), [setInnerParticipants, participants]);
 
   return (
     <table className='table table-secondary m-0 p-0 table-bordered table-bordered-dark col-lg-9'>
