@@ -79,11 +79,13 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
       ) : (
         <div className='mt-3 container-fluid'>
           <div className='row col justify-content-center align-items-center py-3'>
-            <button className='btn btn-light font-weight-bold col-lg-2 mx-2' onClick={() => setShowId(true)}>
-              Switch to room id view
-            </button>
-            <button className='btn btn-light font-weight-bold col-lg-2 mx-2' onClick={onInitiativeCleared}>
+            <button className='btn btn-danger font-weight-bold col-lg-2 mx-2' onClick={onInitiativeCleared}>
               Clear initiative
+            </button>
+          </div>
+          <div className='row col justify-content-center align-items-center pb-3'>
+            <button className='btn btn-warning font-weight-bold col-lg-2 mx-2' onClick={() => setShowId(true)}>
+              Switch to room id view
             </button>
           </div>
           <div className='row col justify-content-center align-items-center pb-3'>

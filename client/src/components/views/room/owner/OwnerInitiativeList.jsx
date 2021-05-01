@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeIdx }) => {
+  const [innerParticipants, setInnerParticipants] = useState([...participants]);
+
   return (
     <table className='table table-secondary m-0 p-0 table-bordered table-bordered-dark col-lg-9'>
       <thead className='thead-dark'>
@@ -15,7 +17,7 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
         </tr>
       </thead>
       <tbody>
-        {participants.map((char, idx) => (
+        {innerParticipants.map((char, idx) => (
           <tr key={idx} className={idx === currentInitiativeIdx ? 'table-danger' : ''}>
             <td className='overflow-wrap'>
               <input
@@ -23,10 +25,12 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='number'
                 value={char.score}
                 onChange={e =>
-                  setParticipants(prev =>
-                    prev.map(ch => (ch === char ? { ...ch, score: parseInt(e.target.value) } : ch))
-                  )
+                  setInnerParticipants(prev => {
+                    const val = parseInt(e.target.value);
+                    return prev.map(ch => (ch === char ? { ...ch, score: isNaN(val) ? '' : val } : ch));
+                  })
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap'>
@@ -35,32 +39,41 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='text'
                 value={char.name}
                 onChange={e =>
-                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, name: e.target.value } : ch)))
+                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, name: e.target.value } : ch)))
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
               <input
                 className='form-control'
-                type='text'
+                type='number'
                 value={char.currentHp}
                 onChange={e =>
-                  setParticipants(prev =>
-                    prev.map(ch => (ch === char ? { ...ch, currentHp: parseInt(e.target.value) } : ch))
+                  setInnerParticipants(prev =>
+                    prev.map(ch => {
+                      const val = parseInt(e.target.value);
+                      return ch === char ? { ...ch, currentHp: isNaN(val) ? '' : val } : ch;
+                    })
                   )
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
               <input
                 className='form-control'
-                type='text'
+                type='number'
                 value={char.maxHp}
                 onChange={e =>
-                  setParticipants(prev =>
-                    prev.map(ch => (ch === char ? { ...ch, maxHp: parseInt(e.target.value) } : ch))
+                  setInnerParticipants(prev =>
+                    prev.map(ch => {
+                      const val = parseInt(e.target.value);
+                      return ch === char ? { ...ch, maxHp: isNaN(val) ? '' : val } : ch;
+                    })
                   )
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap'>
@@ -69,8 +82,9 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 rows='1'
                 value={char.notes}
                 onChange={e =>
-                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
+                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
@@ -78,14 +92,16 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='checkbox'
                 checked={char.hidden}
                 onChange={e =>
-                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, hidden: e.target.checked } : ch)))
+                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, hidden: e.target.checked } : ch)))
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
               <button
                 className='btn btn-sm btn-danger'
-                onClick={() => setParticipants(prev => prev.filter(ch => ch !== char))}
+                onClick={() => setInnerParticipants(prev => prev.filter(ch => ch !== char))}
+                onBlur={() => setParticipants(innerParticipants)}
               >
                 <i className='fas fa-trash-alt'></i>
               </button>
