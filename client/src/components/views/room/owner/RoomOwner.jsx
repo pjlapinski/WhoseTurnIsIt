@@ -116,6 +116,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
           <div className='row justify-content-center'>
             <OwnerInitiativeList
               currentInitiativeIdx={currentInitiativeIdx}
+              setCurrentInitiativeIdx={setCurrentInitiativeIdx}
               participants={participants}
               setParticipants={setParticipants}
             />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeIdx }) => {
+const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeIdx, setCurrentInitiativeIdx }) => {
   const [innerParticipants, setInnerParticipants] = useState([...participants]);
   useEffect(() => setInnerParticipants(participants), [setInnerParticipants, participants]);
 
@@ -11,7 +11,7 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
           <th className='overflow-wrap vw-10'>Score</th>
           <th className='overflow-wrap vw-100'>Name</th>
           <th className='overflow-wrap vw-10'>Current HP</th>
-          <th className='overflow-wrap vw-10'>Max HP</th>
+          <th className='overflow-wrap vw-10'>Maximum HP</th>
           <th className='overflow-wrap vw-100'>Notes</th>
           <th className='overflow-wrap vw-10'>Hidden</th>
           <th className='overflow-wrap vw-10'>Delete</th>
@@ -97,7 +97,12 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
             <td className='overflow-wrap text-center'>
               <button
                 className='btn btn-sm btn-danger'
-                onClick={() => setParticipants(prev => prev.filter(ch => ch !== char))}
+                onClick={() =>
+                  setParticipants(prev => {
+                    if (currentInitiativeIdx > idx) setCurrentInitiativeIdx(prevIdx => prevIdx - 1);
+                    return prev.filter(ch => ch !== char);
+                  })
+                }
               >
                 <i className='fas fa-trash-alt'></i>
               </button>
