@@ -48,7 +48,7 @@ const AddToInitiativeModal = ({ errors, participants, onCharacterSelected, onCha
           <div className='modal-footer'>
             <button
               type='button'
-              className='btn btn-secondary'
+              className='btn btn-warning'
               onClick={() => onCharacterAdded(characterName, initiative)}
               data-dismiss='modal'
             >
@@ -62,7 +62,7 @@ const AddToInitiativeModal = ({ errors, participants, onCharacterSelected, onCha
             >
               Claim
             </button>
-            <button type='button' className='btn btn-danger' data-dismiss='modal'>
+            <button type='button' className='btn btn-secondary' data-dismiss='modal'>
               Just join
             </button>
           </div>
