@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import RoomIdDisplay from './RoomIdDisplay';
 import OwnerInitiativeList from './OwnerInitiativeList';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
+import config from '../../../../config';
 
 const updateSocketInitiative = (socket, data) => {
   socket.off('request-initiative');
@@ -55,6 +56,7 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
       updateSocketInitiative(socket, { participants, currentInitiativeIdx: curr });
       return curr;
     });
+    fetch(config.SERVER_HOST);
   };
 
   const onInitiativeCleared = () => {

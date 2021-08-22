@@ -1,6 +1,16 @@
 const config = require('./config');
+const http = require('http');
+const { Server } = require('socket.io');
 
-const io = require('socket.io')(config.PORT, {
+const keepAliveListener = (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', config.REACT_HOST);
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
+  res.setHeader('Access-Control-Max-Age', 2592000);
+  res.end('Alive');
+};
+const server = http.createServer(keepAliveListener);
+
+const io = new Server(server, {
   cors: {
     origin: config.REACT_HOST,
     methods: ['GET', 'POST'],
@@ -30,3 +40,5 @@ io.on('connection', socket => {
     socket.on('advance-initiative', () => socket.to(roomId).emit('advance-initiative'));
   });
 });
+
+server.listen(config.PORT);
