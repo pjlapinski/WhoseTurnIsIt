@@ -51,13 +51,14 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='number'
                 value={char.currentHp}
                 onChange={e =>
-                  setParticipants(prev =>
+                  setInnerParticipants(prev =>
                     prev.map(ch => {
                       const val = parseInt(e.target.value);
                       return ch === char ? { ...ch, currentHp: isNaN(val) ? '' : val } : ch;
                     })
                   )
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
@@ -66,13 +67,14 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 type='number'
                 value={char.maxHp}
                 onChange={e =>
-                  setParticipants(prev =>
+                  setInnerParticipants(prev =>
                     prev.map(ch => {
                       const val = parseInt(e.target.value);
                       return ch === char ? { ...ch, maxHp: isNaN(val) ? '' : val } : ch;
                     })
                   )
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap'>
@@ -81,8 +83,9 @@ const OwnerInitiativeList = ({ participants, setParticipants, currentInitiativeI
                 rows='1'
                 value={char.notes}
                 onChange={e =>
-                  setParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
+                  setInnerParticipants(prev => prev.map(ch => (ch === char ? { ...ch, notes: e.target.value } : ch)))
                 }
+                onBlur={() => setParticipants(innerParticipants)}
               />
             </td>
             <td className='overflow-wrap text-center'>
