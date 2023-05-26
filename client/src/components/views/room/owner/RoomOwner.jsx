@@ -56,7 +56,6 @@ const RoomOwner = ({ participants, setParticipants, currentInitiativeIdx, setCur
       updateSocketInitiative(socket, { participants, currentInitiativeIdx: curr });
       return curr;
     });
-    fetch(config.SERVER_HOST);
   };
 
   const onInitiativeCleared = () => {

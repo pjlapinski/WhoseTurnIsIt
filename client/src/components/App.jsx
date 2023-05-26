@@ -2,6 +2,11 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomeView from './views/home/HomeView';
 import RoomView from './views/room/RoomView';
+import config from '../config';
+
+setTimeout(() => {
+  fetch(config.SERVER_HOST).then(res => console.log('KeepAlive: ', res.ok));
+}, 1000 * 60);
 
 const App = () => {
   return (
