@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import RoomIdDisplay from './RoomIdDisplay';
 import OwnerInitiativeList from './OwnerInitiativeList';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
-import config from '../../../../config';
 
 const updateSocketInitiative = (socket, data) => {
   socket.off('request-initiative');
